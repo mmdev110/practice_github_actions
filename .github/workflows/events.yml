@@ -12,6 +12,8 @@ jobs:
         run: echo "${{toJSON(github.event)}}"
       - name: get code
         uses: actions/checkout@v3
+      - name: move directory
+        run: cd react_sample
       - name: install dependencies
         run: npm ci
       - name: test code
