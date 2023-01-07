@@ -58,11 +58,11 @@ jobs:
           name: dist-files
           path: ./react_sample/dist
   deploy:
-    #artifactを受け取る
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: get build artifact
+        #artifactを受け取る
         uses: actions/download-artifact@v3
         with:
           name: dist-files
