@@ -43,6 +43,7 @@ jobs:
         working-directory: ./react_sample
         run: npm install
       - name: build
+        working-directory: ./react_sample
         run: npm run build
       - name: publish JS filename
         working-directory: ./react_sample
