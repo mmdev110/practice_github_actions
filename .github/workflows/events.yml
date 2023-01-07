@@ -1,6 +1,6 @@
 #events, event types, filter, context
 
-name: demo1
+name: events
 # update from test branch
 on:
   pull_request:
