@@ -31,7 +31,7 @@ jobs:
       - name: build tmp
         run: ls
   deploy:
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: deploy tmp
         run: ls
