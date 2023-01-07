@@ -1,0 +1,37 @@
+#artifacts, output, depedency caching
+
+name: artifacts
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.tmp
+          key: deps-node-modules-${{hashFiles('**/package-lock.json')}}
+      - name: install dependencies
+        working-directory: ./react_sample
+        run: npm install
+      - name: lint code
+        working-directory: ./react_sample
+        run: npm run lint
+      - name: test code
+        working-directory: ./react_sample
+        run: npm run test
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: build tmp
+        run: ls
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy tmp
+        run: ls
