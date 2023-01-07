@@ -1,1 +1,52 @@
-test
+workflow:
+    ymlファイルそのもの
+    .github/workflowsに置く
+    複数のjobを持つ
+    name: workflowの名前
+    on:
+        workflow実行のタイミング
+        pull_request, push, workflow_dispatchなど
+        さらにeventで細かく指定
+        filterで対象のブランチの制限などできる
+            mainブランチにプルリク来た時など
+    jobs
+        jobは並列実行される
+        job間でのデータのやり取りはartifactやoutputを介して行う
+        runs-on:
+            ジョブが動く環境
+            基本的にはubuntu-latest
+        steps
+            job実行に必要な一つ一つのコマンド
+            name
+            run:
+                実行するコマンド
+activity types
+eventの詳細な種類
+プルリクがopenedになった時など
+https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+filter
+    branches, branches-ignore, paths, paths-ignore
+context
+    githubが用意している変数、関数など
+    ${{}}
+    https://docs.github.com/ja/actions/learn-github-actions/expressions
+    https://docs.github.com/ja/actions/learn-github-actions/contexts
+actions
+    あらかじめ用意されたコマンド
+    usesでactionを指定、withで引数を指定する
+    actions/checkout@v3
+    
+artifact
+    ビルド生成物などのファイル
+    アップロード
+    actions/upload-artifact@v3
+    https://github.com/actions/upload-artifact
+    ダウンロード
+    https://github.com/actions/download-artifact
+output
+https://docs.github.com/ja/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
+    ジョブ間で受け渡したい値
+        生成されたファイル名など
+dependency caching
+    ライブラリのインストールなどをキャッシュを使って高速化
+    actions/cache@v3でキャッシュ
