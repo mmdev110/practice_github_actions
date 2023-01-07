@@ -48,13 +48,13 @@ jobs:
         working-directory: ./react_sample
         id: publish
         #{key_name}={value}として$GITHUB_OUTPUTに流す
-        run: find dist/assets/*.js -type f -execdir echo 'script-file={}'>>$GITHUB_OUTPUT ';'
+        run: find dist/assets/*.js -type f -execdir echo 'script-file={}'>>$GITHUB_OUTPUT
       - name: upload artifacts
-        working-directory: ./react_sample
+        #usesとworking-directoryは併用不可
         uses: actions/upload-artifact@v3
         with:
           name: dist-files
-          path: dist
+          path: ./react_sample/dist
   deploy:
     #artifactを受け取る
     needs: build
