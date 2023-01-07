@@ -12,15 +12,15 @@ jobs:
         run: echo "${{toJSON(github.event)}}"
       - name: get code
         uses: actions/checkout@v3
-      - name: move directory
-        run: cd react_sample
-      - name: ls
-        run: ls
       - name: install dependencies
+        working-directory: ./react_sample
         run: npm install
       - name: test code
+        working-directory: ./react_sample
         run: npm run test
       - name: build code
+        working-directory: ./react_sample
         run: npm run build
       - name: deploy project
+        working-directory: ./react_sample
         run: echo "deploying..."
