@@ -1,9 +1,20 @@
 name: demo1
 on:
   pull_request:
+    types:
+      - opened
+    branches:
+      - main # main
+      - "dev-*" # dev-new dev-this-is-new
+      - "feat/**" # feat/new feat/new/button
   workflow_dispatch:
   push:
-
+    branches:
+      - main # main
+      - "dev-*" # dev-new dev-this-is-new
+      - "feat/**" # feat/new feat/new/button
+    paths-ignore:
+      - ".github/workflows/*"
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,7 +24,7 @@ jobs:
       - name: get code
         uses: actions/checkout@v3
       - name: install dependencies
-        working-directory: ./react_sample
+        working-directory: ./react_sample/ #cdの代わりにworking-dorectoryを使う
         run: npm install
       - name: test code
         working-directory: ./react_sample
