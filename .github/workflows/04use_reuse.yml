@@ -21,7 +21,7 @@ jobs:
         working-directory: ./04_workflow_demo_prj
         run: npm ci
       - name: Lint code
-      working-directory: ./04_workflow_demo_prj
+        working-directory: ./04_workflow_demo_prj
         run: npm run lint
   test:
     runs-on: ubuntu-latest
