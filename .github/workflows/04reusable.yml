@@ -1,0 +1,36 @@
+#workflowの関数化
+name: reusable
+on:
+  workflow_call:
+    #workflow_callにすると他workflowから呼ばれた時だけ実行する
+    inputs:
+      artifact-name:
+        description: the name of the deployable artifact files
+        required: false
+        default: dist
+        type: string
+    #withで指定する引数
+    outputs:
+      result:
+        description: the result of the deployment operation
+        value: ${{jobs.deploy.outputs.outcome}}
+    #secrets:
+    #  some-secret:
+    #    required: false
+jobs:
+  deploy:
+    outputs:
+      outcome: ${{steps.set-result.outputs.step-result}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{inputs.artifact-name}}
+      - name: list files
+        run: ls
+      - name: output information
+        run: echo "deploying & uploading..."
+      - name: set result output
+        id: set-result
+        run: echo "step-result=success">>$GITHUB_OUTPUT
