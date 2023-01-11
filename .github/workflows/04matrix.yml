@@ -1,0 +1,33 @@
+name: matrix
+on: push
+jobs:
+  build:
+    continue-on-error: true
+    strategy:
+      #実行したいパラメータの組み合わせ
+      matrix:
+        node-version: [12, 14, 16]
+        operating-system: [ubuntu-latest, windows-latest]
+        include:
+          #追加で実施する組み合わせ
+          - node-version: 18
+            operationg-system: ubuntu-latest
+        exclude:
+          #実施しない組み合わせ
+          - node-version: 12
+            operationg-system: windows-latest
+    runs-on: ${{matrix.operating-system}}
+    #パラメータをmatrixから受け取る
+    steps:
+      - name: getcode
+        uses: actions/checkout@v3
+      - name: install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{matrix.node-version}}
+      - name: install dependencies
+        working-directory: ./04_workflow_demo_prj
+        run: npm install
+      - name: build
+        working-directory: ./04_workflow_demo_prj
+        run: npm run build
