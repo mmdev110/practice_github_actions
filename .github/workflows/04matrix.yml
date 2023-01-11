@@ -11,7 +11,7 @@ jobs:
         include:
           #追加で実施する組み合わせ
           - node-version: 18
-            operationg-system: ubuntu-latest
+            operating-system: ubuntu-latest
         exclude:
           #実施しない組み合わせ
           - node-version: 12
