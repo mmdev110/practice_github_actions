@@ -1,4 +1,4 @@
-name: website deployment
+name: 04_workflow
 on:
   push:
     branches:
@@ -20,6 +20,7 @@ jobs:
         working-directory: ./04_workflow_demo_prj
         run: npm install
       - name: lint code
+        working-directory: ./04_workflow_demo_prj
         run: npm run lint
   test:
     runs-on: ubuntu-latest
