@@ -1,0 +1,97 @@
+name: website deployment
+on:
+  push:
+    branches: -main
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./04_workflow_demo_prj/node_modules
+          key: deps-node-modules-${{hashFiles('**/package-lock.json')}}
+      - name: install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: ./04_workdflow_demo_prj
+        run: npm install
+      - name: lint code
+        run: npm run lint
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3
+      - name: cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./04_workflow_demo_prj/node_modules
+          key: deps-node-modules-${{hashFiles('**/package-lock.json')}}
+      - name: install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: ./04_workflow_demo_prj
+        run: npm install
+      - name: test code
+        id: run-tests
+        #continue-on-error: true
+        run: npm run test
+      - name: upload test report
+        if: failure() && steps.run-tests.outcome == 'failure'
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: ./04_workflow_demo_prj/test.json
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ./04_workflow_demo_prj/node_modules
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        #キャッシュがヒットしなかったら
+        if: steps.cache.outputs.cache-hit != 'true'
+        working-directory: ./04_workflow_demo_prj
+        run: npm install
+      - name: Build website
+        id: build-website
+        working-directory: ./04_workflow_demo_prj
+        run: npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: ./04_workflow_demo_prj/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files
+      - name: Output contents
+        run: ls
+      - name: Deploy
+        run: echo "Deploying..."
+  report:
+    #失敗時のレポート
+    #lintとdeployを待つ必要がある
+    needs: [lint, deploy]
+    #失敗時だけjobを走らせる
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |
+          echo "Something went wrong"
+          echo "${{ toJSON(github) }}"
