@@ -15,7 +15,7 @@ jobs:
         exclude:
           #実施しない組み合わせ
           - node-version: 12
-            operationg-system: windows-latest
+            operating-system: windows-latest
     runs-on: ${{matrix.operating-system}}
     #パラメータをmatrixから受け取る
     steps:
