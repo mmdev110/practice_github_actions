@@ -76,7 +76,7 @@ jobs:
   deploy:
     #関数化したworkflowを使ってdeploy
     needs: build
-    uses: ./.github/workflows/reusable.yml
+    uses: ./.github/workflows/04reusable.yml
     with:
       artifact-name: dist-files
     #secrets:
