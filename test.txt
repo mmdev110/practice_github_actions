@@ -50,3 +50,25 @@ https://docs.github.com/ja/actions/using-workflows/workflow-commands-for-github-
 dependency caching
     ライブラリのインストールなどをキャッシュを使って高速化
     actions/cache@v3でキャッシュ
+
+workflow
+    stepが失敗するとそれ以降のstep, jobは全て実行されない
+    失敗した場合にstepを実行させたい場合はif文で分岐させる
+    if failure() && steps.{step_id}.outcome == 'failure'
+        steps~~.outcome
+            success, failure, cancelled, skippedの4つ 
+            outcomeはcontinue_on_errorの前の結果
+            conclusionはcontinue_on_errorの後の結果を得られる
+            if文にこの条件をつけるだけだと、このstepも無視されてしまう
+                失敗したstep以降を全て無視されてしまうため
+        failure()
+            これをつけることで前のstepが失敗した場合もキャッチできるようになる
+    failure()
+        過去のjob, stepが失敗した場合にtrue
+    success()
+        過去のjob, stepが全て成功している時true
+    always()
+        必ずtrue(cancel時も)
+    cancelled()
+        キャンセルされた時のみtrue
+
